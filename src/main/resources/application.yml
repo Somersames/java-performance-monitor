@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: java_performance_monitor
+  data:
+    mongodb:
+      enable: true
+      database: jps
+      host: localhost
+      port: 27017
+server:
+  port: 8080

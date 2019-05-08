@@ -4,10 +4,10 @@ package xyz.somersames.constant;
  * @author szh
  * @create 2019-05-07 0:10
  **/
-public interface JPSConstant {
-    String JPS ="jps";
-    String _Q ="-q";
-    String _M ="-m";
-    String _L ="-l";
-    String _V = "-v";
+public class JPSConstant {
+    public static final String JPS ="jps";
+    public static final String _Q ="-q";
+    public static final String _M ="-m";
+    public static final String _L ="-l";
+    public static final String _V = "-v";
 }
