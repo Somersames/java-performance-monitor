@@ -9,7 +9,7 @@ import xyz.somersames.dto.JpsDto;
 public interface JpsService {
     /**
      * 将JPS命令的数据保存至Mongo
-     * @param obj
+     * @param jps
      * @return
      */
     Boolean save(JpsDto jps);

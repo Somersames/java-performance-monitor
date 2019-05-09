@@ -2,10 +2,12 @@ package xyz.somersames.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 import xyz.somersames.config.repository.MonitorRepository;
-import xyz.somersames.config.repository.impl.MonitorRepositoryImpl;
+import xyz.somersames.core.CmdExec;
+import xyz.somersames.core.CmdFactory;
+import xyz.somersames.core.Parse;
+import xyz.somersames.core.ParseFactory;
 import xyz.somersames.dto.JpsDto;
 import xyz.somersames.service.JpsService;
 
@@ -23,5 +25,14 @@ public class JpsServiceImpl implements JpsService {
     public Boolean save(JpsDto jps) {
         monitorRepository.save(jps);
         return true;
+    }
+
+    public void parse(String cmd){
+        Parse<JpsDto> parse = ParseFactory.getParseInstance(cmd);
+        CmdExec cmdExec = CmdFactory.getCmdInstance();
+        String result = cmdExec.execute(cmd);
+        JpsDto jpsDto = new JpsDto();
+        parse.parse(jpsDto,result);
+        //TODO 入mongo
     }
 }
