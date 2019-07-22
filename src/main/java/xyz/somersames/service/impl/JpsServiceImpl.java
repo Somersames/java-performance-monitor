@@ -33,6 +33,5 @@ public class JpsServiceImpl implements JpsService {
         String result = cmdExec.execute(cmd);
         JpsDto jpsDto = new JpsDto();
         parse.parse(jpsDto,result);
-        //TODO 入mongo
     }
 }

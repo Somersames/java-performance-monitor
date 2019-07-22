@@ -39,4 +39,9 @@ public class JpsDto {
      */
     private String jvmArgs;
 
+    /**
+     * 应用包名
+     */
+    private String packageName;
+
 }
