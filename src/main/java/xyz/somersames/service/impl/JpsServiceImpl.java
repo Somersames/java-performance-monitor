@@ -27,11 +27,4 @@ public class JpsServiceImpl implements JpsService {
         return true;
     }
 
-    public void parse(String cmd){
-        Parse<JpsDto> parse = ParseFactory.getParseInstance(cmd);
-        CmdExec cmdExec = CmdFactory.getCmdInstance();
-        String result = cmdExec.execute(cmd);
-        JpsDto jpsDto = new JpsDto();
-        parse.parse(jpsDto,result);
-    }
 }
