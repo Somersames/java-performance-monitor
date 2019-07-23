@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import xyz.somersames.constant.JPSConstant;
+import xyz.somersames.core.parseImpl.JPSParse;
 import xyz.somersames.dto.JpsDto;
 import xyz.somersames.util.CmdExec;
 
@@ -16,8 +17,15 @@ import java.util.Map;
 public class JpsTask {
 
 
+    private final CmdExec cmdExec;
+
+    private final JPSParse jpsParse;
+
     @Autowired
-    CmdExec cmdExec;
+    public JpsTask(JPSParse jpsParse, CmdExec cmdExec) {
+        this.jpsParse = jpsParse;
+        this.cmdExec = cmdExec;
+    }
 
     private List<String> commandList = new ArrayList<String>();
 
@@ -32,8 +40,8 @@ public class JpsTask {
     public void start(){
         Map<String, JpsDto> jpsMap = new HashMap<String, JpsDto>();
         for(String command: commandList){
-            Map<String,String> map = new HashMap<String, String>();
-            cmdExec.cmdExec(command,map);
+            Map<String,Object> map = new HashMap<String, Object>();
+            cmdExec.cmdExec(command,jpsParse,map);
         }
     }
 

@@ -16,5 +16,5 @@ public interface Parse<T> {
     T parse(T t,String str);
 
 
-    Map parse(String str);
+    void parse(String line, Map<String,Object> map);
 }

@@ -3,6 +3,8 @@ package xyz.somersames.util;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import xyz.somersames.constant.JPSConstant;
+import xyz.somersames.core.Parse;
+import xyz.somersames.core.parseImpl.JPSParse;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,7 +19,7 @@ import java.util.Map;
 @Component
 public class CmdExec {
 
-    public String cmdExec(String cmd, Map<String, String> map){
+    public String cmdExec(String cmd, Parse parse, Map<String,Object> map){
 
         StringBuffer sb =new StringBuffer();
         try {
@@ -26,7 +28,7 @@ public class CmdExec {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line =null;
             while ((line = bufferedReader.readLine()) != null) {
-                handlePid(map,line);
+                parse.parse(line,map);
                 sb.append(line);
             }
             return sb.toString();
@@ -38,15 +40,10 @@ public class CmdExec {
 
     public static void main(String[] args) {
         CmdExec instance = new CmdExec();
-        String result = instance.cmdExec(JPSConstant.JPS + ' ' + JPSConstant._M + ' ' + JPSConstant._V,new HashMap<String, String>());
+        JPSParse jpsParse = new JPSParse();
+        Map<String,Object> map = new HashMap<String, Object>();
+        instance.cmdExec(JPSConstant.JPS + ' ' + JPSConstant._L,jpsParse,map);
+        System.out.println(map);
     }
 
-    private void handlePid(Map<String,String> map, String line){
-        if(StringUtils.isNotBlank(line)){
-            int pid = line.indexOf(" ");
-            if(pid < line.length()){
-                map.put(line.substring(0,pid),line.substring(pid + 1));
-            }
-        }
-    }
 }
