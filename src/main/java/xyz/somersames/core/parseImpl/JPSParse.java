@@ -22,8 +22,10 @@ public class JPSParse implements Parse<JpsDto>{
     public void parse(String line, Map<String,Object> map) {
         if (StringUtils.isNotBlank(line)) {
             int pid = line.indexOf(" ");
-            if (pid < line.length()) {
+            if (pid < line.length() && pid > 0) {
                 map.put(line.substring(0, pid), line.substring(pid + 1));
+            } else {
+                map.put(line,"");
             }
         }
     }

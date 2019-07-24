@@ -3,12 +3,12 @@ package xyz.somersames.job;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import xyz.somersames.constant.JPSConstant;
 import xyz.somersames.core.parseImpl.JPSParse;
 import xyz.somersames.dto.JpsDto;
 import xyz.somersames.util.CmdExec;
+import xyz.somersames.util.impl.JpsConvert;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,13 +26,15 @@ public class JpsTask {
 
     private final JPSParse jpsParse;
 
+    private final JpsConvert jpsConvert;
 
     private ExecutorService executorService = new ThreadPoolExecutor(4,4,0L,TimeUnit.MICROSECONDS, new LinkedBlockingQueue<Runnable>());
 
     @Autowired
-    public JpsTask(JPSParse jpsParse, CmdExec cmdExec) {
+    public JpsTask(JPSParse jpsParse, CmdExec cmdExec, JpsConvert jpsConvert) {
         this.jpsParse = jpsParse;
         this.cmdExec = cmdExec;
+        this.jpsConvert = jpsConvert;
     }
 
     private List<String> commandList = new ArrayList<String>();
@@ -58,7 +60,8 @@ public class JpsTask {
                 }
             });
         }
-        while(!executorService.isShutdown()){
+        executorService.shutdown();
+        while(!executorService.isTerminated()){
 
         }
         log.info("[jps]定时任务处理结束");
@@ -66,23 +69,16 @@ public class JpsTask {
 
     private synchronized void setValue(Map<String, JpsDto> jpsMap, Map<String,Object> map,String su){
         for(String key : map.keySet()){
-            JpsDto jpsDto = null;
+            JpsDto jpsDto;
             if(jpsMap.containsKey(key)){
                 jpsDto = jpsMap.get(key);
             } else {
                 jpsDto = new JpsDto();
                 jpsMap.put(key,jpsDto);
             }
-            convertValueToJps((String) map.get(key),jpsDto,su);
+            jpsDto.setPid(key);
+            jpsConvert.convert(su, (String) map.get(key), jpsDto);
         }
     }
 
-    // TODO 用工厂模式来建立比较好
-    private void convertValueToJps(String value, JpsDto jpsDto, String su){
-        if(JPSConstant._L.equals(su)){
-            jpsDto.setMainFunctionName(value);
-        } else if(JPSConstant._M.equals(su)){
-            jpsDto.setJvmArgs(value);
-        }
-    }
 }

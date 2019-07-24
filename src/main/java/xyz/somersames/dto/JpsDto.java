@@ -44,4 +44,9 @@ public class JpsDto {
      */
     private String packageName;
 
+    /**
+     * Main函数参数
+     */
+    private String mainMethodsArgs;
+
 }
