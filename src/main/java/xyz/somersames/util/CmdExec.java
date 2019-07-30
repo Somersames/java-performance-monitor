@@ -42,7 +42,7 @@ public class CmdExec {
         CmdExec instance = new CmdExec();
         JPSParse jpsParse = new JPSParse();
         Map<String,Object> map = new HashMap<String, Object>();
-        instance.cmdExec(JPSConstant.JPS + ' ' + JPSConstant._L,jpsParse,map);
+        instance.cmdExec(JPSConstant.JPS + " " + JPSConstant._L,jpsParse,map);
         System.out.println(map);
     }
 
