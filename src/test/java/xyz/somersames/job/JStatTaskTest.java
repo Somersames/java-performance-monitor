@@ -15,4 +15,8 @@ public class JStatTaskTest extends BaseTest {
     public void start() {
         jStatTask.start();
     }
+
+    @Test
+    public void start1() {
+    }
 }

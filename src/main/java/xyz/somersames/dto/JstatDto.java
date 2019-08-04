@@ -11,38 +11,38 @@ public class JstatDto {
     @Id
     private String id;
 
-    private Long S0C;
+    private Double S0C;
 
-    private Long S1C;
+    private Double S1C;
 
-    private Long S0U;
+    private Double S0U;
 
-    private Long S1U;
+    private Double S1U;
 
-    private Long EC;
+    private Double EC;
 
-    private Long EU;
+    private Double EU;
 
-    private Long OC;
+    private Double OC;
 
-    private Long OU;
+    private Double OU;
 
-    private Long MC;
+    private Double MC;
 
-    private Long MU;
+    private Double MU;
 
-    private Long CCSC;
+    private Double CCSC;
 
-    private Long CCSU;
+    private Double CCSU;
 
-    private Long YGC;
+    private Double YGC;
 
-    private Long YGCT;
+    private Double YGCT;
 
-    private Long FGC;
+    private Double FGC;
 
-    private Long FGCT;
+    private Double FGCT;
 
-    private Long GCT;
+    private Double GCT;
 
 }

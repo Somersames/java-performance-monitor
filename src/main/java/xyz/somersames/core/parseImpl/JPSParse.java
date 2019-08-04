@@ -13,10 +13,10 @@ import java.util.Map;
  * @create 2019-05-09 23:50
  **/
 @Service
-public class JPSParse implements Parse<JpsDto>{
+public class JPSParse implements Parse<Map<String,Object>>{
 
-    public JpsDto parse(JpsDto jpsDto, String str) {
-        return null;
+    public void parse(String str,JpsDto jpsDto) {
+        return;
     }
 
     public void parse(String line, Map<String,Object> map) {

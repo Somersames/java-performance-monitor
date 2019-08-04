@@ -13,7 +13,7 @@ public interface Parse<T> {
      * @param t
      * @return
      */
-    T parse(T t,String str);
+    void parse(String str, T t);
 
 
     void parse(String line, Map<String,Object> map);

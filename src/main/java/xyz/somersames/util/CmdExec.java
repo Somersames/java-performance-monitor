@@ -2,9 +2,13 @@ package xyz.somersames.util;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
+import sun.tools.jstat.Jstat;
 import xyz.somersames.constant.JPSConstant;
+import xyz.somersames.constant.JSTATConstant;
 import xyz.somersames.core.Parse;
 import xyz.somersames.core.parseImpl.JPSParse;
+import xyz.somersames.core.parseImpl.JStatParse;
+import xyz.somersames.dto.JstatDto;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,9 +21,9 @@ import java.util.Map;
  * @create 2019-05-07 0:19
  **/
 @Component
-public class CmdExec {
+public class CmdExec<T> {
 
-    public String cmdExec(String cmd, Parse parse, Map<String,Object> map){
+    public String cmdExec(String cmd, Parse parse,T t){
 
         StringBuffer sb =new StringBuffer();
         try {
@@ -28,7 +32,7 @@ public class CmdExec {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line =null;
             while ((line = bufferedReader.readLine()) != null) {
-                parse.parse(line,map);
+                parse.parse(line,t);
                 sb.append(line);
             }
             return sb.toString();
@@ -39,10 +43,13 @@ public class CmdExec {
     }
 
     public static void main(String[] args) {
-        CmdExec instance = new CmdExec();
-        JPSParse jpsParse = new JPSParse();
+        CmdExec<JstatDto> instance = new CmdExec();
+//        JPSParse jpsParse = new JPSParse();
+        JStatParse jStatParse = new JStatParse();
         Map<String,Object> map = new HashMap<String, Object>();
-        instance.cmdExec(JPSConstant.JPS + " " + JPSConstant._L,jpsParse,map);
+        JstatDto jstatDto = new JstatDto();
+        instance.cmdExec(JSTATConstant.JSTAT + " " + JSTATConstant._GC + " " +"641",jStatParse,jstatDto);
+//        instance.cmdExec(JPSConstant.JPS + " " + JPSConstant._L,jpsParse,map);
         System.out.println(map);
     }
 
