@@ -3,10 +3,12 @@ package xyz.somersames.job;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import xyz.somersames.constant.JPSConstant;
 import xyz.somersames.core.parseImpl.JPSParse;
 import xyz.somersames.dto.JpsDto;
+import xyz.somersames.service.MongoService;
 import xyz.somersames.util.CmdExec;
 import xyz.somersames.util.impl.JpsConvert;
 
@@ -21,6 +23,9 @@ import java.util.concurrent.*;
 @Slf4j
 public class JpsTask {
 
+
+    @Autowired
+    MongoService mongoService;
 
     private final CmdExec cmdExec;
 
@@ -46,7 +51,7 @@ public class JpsTask {
         commandList.add(JPSConstant._Q);
     }
 
-//    @Scheduled()
+    @Scheduled(cron = "*/60 * * * * ?")
     public void start(){
         final Map<String, JpsDto> jpsMap = new ConcurrentHashMap<String, JpsDto>();
         for(final String suffix: commandList){
@@ -60,11 +65,7 @@ public class JpsTask {
                 }
             });
         }
-        executorService.shutdown();
-        while(!executorService.isTerminated()){
 
-        }
-        log.info("[jps]定时任务处理结束");
     }
 
     private synchronized void setValue(Map<String, JpsDto> jpsMap, Map<String,Object> map,String su){
@@ -78,6 +79,7 @@ public class JpsTask {
             }
             jpsDto.setPid(key);
             jpsConvert.convert(su, (String) map.get(key), jpsDto);
+            mongoService.save(jpsDto);
         }
     }
 

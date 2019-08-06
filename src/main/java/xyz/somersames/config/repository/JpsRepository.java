@@ -9,5 +9,5 @@ import xyz.somersames.dto.JpsDto;
  * @create 2019-05-09 0:16
  **/
 
-public interface MonitorRepository extends MongoRepository<JpsDto,String> {
+public interface JpsRepository extends MongoRepository<JpsDto,String> {
 }

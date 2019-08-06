@@ -3,12 +3,14 @@ package xyz.somersames.job;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import xyz.somersames.constant.JPSConstant;
 import xyz.somersames.constant.JSTATConstant;
 import xyz.somersames.core.parseImpl.JPSParse;
 import xyz.somersames.core.parseImpl.JStatParse;
 import xyz.somersames.dto.JstatDto;
+import xyz.somersames.service.MongoService;
 import xyz.somersames.util.CmdExec;
 
 import java.util.ArrayList;
@@ -30,6 +32,9 @@ import java.util.concurrent.TimeUnit;
 public class JStatTask {
 
     @Autowired
+    MongoService mongoService;
+
+    @Autowired
     CmdExec cmdExec;
 
     @Autowired
@@ -37,6 +42,8 @@ public class JStatTask {
 
     private ExecutorService executorService = new ThreadPoolExecutor(4,4,0L, TimeUnit.MICROSECONDS, new LinkedBlockingQueue<Runnable>());
 
+
+    @Scheduled(cron = "*/60 * * * * ?")
 
     public void start(){
         // 获取到ID后再获取详情
@@ -46,8 +53,7 @@ public class JStatTask {
                 JstatDto jstatDto = new JstatDto();
                 jstatDto.setId(id);
                 cmdExec.cmdExec(JSTATConstant.JSTAT + " " + JSTATConstant._GC + " "+ id,jStatParse,jstatDto);
-                System.out.println(jstatDto);
-                // TODO Save TO Mongo
+                mongoService.save(jstatDto);
             }
         }
     }
