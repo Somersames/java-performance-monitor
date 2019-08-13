@@ -1,19 +1,20 @@
 package xyz.somersames.service;
 
-import xyz.somersames.dto.JpsDto;
-import xyz.somersames.dto.JstatDto;
+import xyz.somersames.dto.request.MongoQueryReqDto;
+
+import java.util.List;
 
 /**
  * @author szh
  * @create 2019-05-09 0:20
  **/
-public interface MongoService {
+public interface MongoService<T> {
     /**
      * 将JPS命令的数据保存至Mongo
-     * @param jpsDto
+     * @param t
      * @return
      */
-    Boolean save(JpsDto jpsDto);
+    Boolean save(T t);
 
-    Boolean save(JstatDto jstatDto);
+    List<T> query(MongoQueryReqDto reqDto);
 }
